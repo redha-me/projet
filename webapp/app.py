@@ -178,9 +178,7 @@ def book_card_html(title: str, author: str = None, genre: str = None,
     genre_value = genre if genre and str(genre).strip() else "Genre non disponible"
 
     quality_badge = ''
-    if metadata_quality == 'inferred':
-        quality_badge = '<span style="font-size:0.65rem;color:#a0aec0;margin-left:6px;" title="Metadata inferée">⚙️ Inférée</span>'
-    elif metadata_quality == 'partial':
+    if metadata_quality == 'partial':
         quality_badge = '<span style="font-size:0.65rem;color:#f6ad55;margin-left:6px;" title="Metadata partielle">⚠️ Partielle</span>'
 
     author_part = f'<span style="font-size:0.8rem;color:#718096;">✍️ {author_value}{quality_badge}</span>'
