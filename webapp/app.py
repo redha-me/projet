@@ -748,16 +748,46 @@ with tab4:
 
     # Treemap des clusters
     cluster_data = getattr(recommender, 'cluster_to_book_idxs', None)
+    book_genres = getattr(recommender, 'book_idx_to_genre', {})
     if cluster_data and len(cluster_data) > 0:
         st.markdown("---")
         st.markdown("#### Comment les livres sont-ils groupes ?")
         st.markdown('<div class="chart-caption">🗂️ Notre IA regroupe les livres en clusters bases sur les themes et le comportement des lecteurs.</div>', unsafe_allow_html=True)
-        # Sort clusters by size for cleaner display
+        # Build descriptive labels from dominant genre keywords
+        genre_keywords = {
+            'Fantasy / Surnaturel': ['fantasy', 'paranormal', 'supernatural'],
+            'Romance': ['romance', 'romantic'],
+            'Policier / Thriller': ['mystery', 'thriller', 'crime'],
+            'Jeunesse / Young Adult': ['young-adult', 'children', 'young adult'],
+            'Histoire / Biographie': ['history', 'historical', 'biography'],
+            'Non-fiction': ['non-fiction', 'nonfiction'],
+            'BD / Comics': ['comics', 'graphic'],
+            'Science-Fiction': ['science-fiction', 'scifi', 'sci-fi'],
+            'Classique': ['classic', 'classique'],
+        }
+
+        def get_cluster_label(cluster_books):
+            genre_text = []
+            for bidx in cluster_books:
+                g = book_genres.get(bidx, '')
+                if g:
+                    genre_text.append(g.lower())
+            if not genre_text:
+                return "General"
+            combined = ' '.join(genre_text)
+            # Count keyword matches
+            counts = {}
+            for label, keywords in genre_keywords.items():
+                counts[label] = sum(1 for kw in keywords if kw in combined)
+            # Pick top 2 keywords
+            top = sorted(counts.items(), key=lambda x: x[1], reverse=True)
+            labels = [l for l, c in top if c > 0][:2]
+            return ' / '.join(labels) if labels else 'General'
+
         sorted_clusters = sorted(cluster_data.items(), key=lambda x: len(x[1]), reverse=True)
         cluster_sizes = [len(v) for _, v in sorted_clusters]
-        cluster_names = [f"Groupe {k+1}" for k, _ in sorted_clusters]
-        cluster_labels = [f"{n} ({s} livres)" for n, s in zip(cluster_names, cluster_sizes)]
-        # Use a DataFrame with explicit parent for reliable treemap rendering
+        cluster_labels = [f"{get_cluster_label(v)} ({len(v)} livres)" for k, v in sorted_clusters]
+
         df_clusters = pd.DataFrame({
             'label': cluster_labels,
             'size': cluster_sizes,
