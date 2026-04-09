@@ -52,7 +52,7 @@ class BookRecommender:
             self.interactions_matrix_T = self.interactions_matrix.T.tocsr()
             self.predicted_ratings = np.load(
                 os.path.join(self.models_dir, "predicted_ratings.npy")
-            )
+            ).astype(np.float32)  # Normalize to float32 (may have been saved as float16)
             self.user_bias = np.load(
                 os.path.join(self.models_dir, "user_bias.npy")
             )
