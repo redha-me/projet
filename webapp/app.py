@@ -784,7 +784,7 @@ with tab4:
 
         sorted_clusters = sorted(cluster_data.items(), key=lambda x: len(x[1]), reverse=True)
         cluster_sizes = [len(v) for _, v in sorted_clusters]
-        cluster_labels = [f"{get_cluster_label(v)} ({len(v)} livres)" for k, v in sorted_clusters]
+        cluster_labels = [f"#{k+1} {get_cluster_label(v)} ({len(v)} livres)" for k, v in sorted_clusters]
 
         df_clusters = pd.DataFrame({
             'label': cluster_labels,
