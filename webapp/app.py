@@ -27,33 +27,31 @@ st.markdown("""
 
     html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     .stApp {
-        background: radial-gradient(circle at top left, rgba(102,126,234,0.10), transparent 30%),
-                    radial-gradient(circle at top right, rgba(118,75,162,0.08), transparent 25%),
-                    linear-gradient(180deg, #fbfcff 0%, #f6f8ff 100%);
+        background: linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
     }
     .main .block-container { padding-top: 1.5rem; padding-bottom: 2rem; max-width: 1280px; }
 
     /* Hero */
     .hero {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        background: linear-gradient(135deg, #eef0fb 0%, #e8ecf8 50%, #dde3f0 100%);
         border-radius: 24px; padding: 3rem 2.5rem; margin-bottom: 2rem;
         text-align: center; position: relative; overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 30px rgba(102,126,234,0.12);
     }
     .hero::before {
         content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-        background: radial-gradient(circle at 30% 50%, rgba(102,126,234,0.15) 0%, transparent 50%),
-                    radial-gradient(circle at 70% 50%, rgba(240,147,251,0.1) 0%, transparent 50%);
+        background: radial-gradient(circle at 30% 50%, rgba(102,126,234,0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 70% 50%, rgba(118,75,162,0.06) 0%, transparent 50%);
         animation: heroGlow 8s ease-in-out infinite alternate;
     }
     @keyframes heroGlow { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, -20px); } }
-    .hero-title { font-size: 2.8rem; font-weight: 800; color: white; margin: 0 0 0.75rem 0; letter-spacing: -0.02em; position: relative; z-index: 1; }
-    .hero-subtitle { font-size: 1.15rem; color: rgba(255,255,255,0.75); margin: 0 0 2.5rem 0; position: relative; z-index: 1; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .hero-title { font-size: 2.8rem; font-weight: 800; color: #1a202c; margin: 0 0 0.75rem 0; letter-spacing: -0.02em; position: relative; z-index: 1; }
+    .hero-subtitle { font-size: 1.15rem; color: #4a5568; margin: 0 0 2.5rem 0; position: relative; z-index: 1; max-width: 600px; margin-left: auto; margin-right: auto; }
     .hero-steps { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; position: relative; z-index: 1; }
-    .hero-step { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 1.25rem 1.5rem; min-width: 160px; backdrop-filter: blur(10px); transition: transform 0.2s ease; }
-    .hero-step:hover { transform: translateY(-4px); background: rgba(255,255,255,0.15); }
+    .hero-step { background: rgba(255,255,255,0.7); border: 1px solid rgba(102,126,234,0.15); border-radius: 16px; padding: 1.25rem 1.5rem; min-width: 160px; backdrop-filter: blur(10px); transition: transform 0.2s ease; }
+    .hero-step:hover { transform: translateY(-4px); background: rgba(255,255,255,0.9); }
     .hero-step .step-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-    .hero-step .step-label { font-size: 0.85rem; color: rgba(255,255,255,0.9); font-weight: 500; margin: 0; }
+    .hero-step .step-label { font-size: 0.85rem; color: #2d3748; font-weight: 500; margin: 0; }
 
     /* Stats bar */
     .stats-bar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
@@ -101,9 +99,9 @@ st.markdown("""
     .stTabs [aria-selected="true"] { background: white !important; color: #667eea !important; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-weight: 600; }
 
     /* Sidebar */
-    section[data-testid="stSidebar"] { background: #1a1a2e !important; }
-    section[data-testid="stSidebar"] * { color: rgba(255,255,255,0.85) !important; }
-    section[data-testid="stSidebar"] .stSelectbox > div > div { background: rgba(255,255,255,0.08) !important; border-color: rgba(255,255,255,0.2) !important; border-radius: 10px !important; color: white !important; }
+    section[data-testid="stSidebar"] { background: #f7f8fc !important; border-right: 1px solid #e2e8f0; }
+    section[data-testid="stSidebar"] * { color: #4a5568 !important; }
+    section[data-testid="stSidebar"] .stSelectbox > div > div { background: white !important; border-color: #e2e8f0 !important; border-radius: 10px !important; color: #2d3748 !important; }
 
     /* Chart caption */
     .chart-caption { background: #f7f8fc; border-left: 3px solid #667eea; padding: 0.6rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #4a5568; margin-bottom: 1rem; }
@@ -116,9 +114,9 @@ st.markdown("""
     .style-card .sc-desc { font-size: 0.75rem; color: #718096; margin: 0.25rem 0 0 0; }
 
     /* FAQ */
-    .faq-item { background: rgba(255,255,255,0.06); border-radius: 10px; padding: 0.9rem 1rem; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.1); }
-    .faq-q { font-weight: 600; font-size: 0.85rem; color: rgba(255,255,255,0.9) !important; margin: 0 0 0.35rem 0; }
-    .faq-a { font-size: 0.8rem; color: rgba(255,255,255,0.6) !important; margin: 0; line-height: 1.5; }
+    .faq-item { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.9rem 1rem; margin-bottom: 0.5rem; }
+    .faq-q { font-weight: 600; font-size: 0.85rem; color: #2d3748 !important; margin: 0 0 0.35rem 0; }
+    .faq-a { font-size: 0.8rem; color: #718096 !important; margin: 0; line-height: 1.5; }
 
     h1, h2, h3, h4, h5, h6 { color: #1a202c; }
     .stMarkdown p { color: #4a5568; }
@@ -151,11 +149,24 @@ def book_card_html(title: str, author: str = None, genre: str = None,
                    rank: int = None, image_url: str = None,
                    goodreads_url: str = None, metadata_quality: str = None) -> str:
     """Genere une carte livre en HTML."""
+    # Sanitize inputs (pandas NaN/NaN can leak as "nan"/"undefined")
+    import math
+    if title is None or (isinstance(title, float) and math.isnan(title)):
+        title = "Livre inconnu"
+    else:
+        title = str(title).strip() or "Livre inconnu"
+    if author is not None and isinstance(author, float) and math.isnan(author):
+        author = None
+    if genre is not None and isinstance(genre, float) and math.isnan(genre):
+        genre = None
+    if goodreads_url is not None and isinstance(goodreads_url, float) and math.isnan(goodreads_url):
+        goodreads_url = None
+
     rank_part = f'<span style="position:absolute;top:12px;right:14px;font-size:1.3rem;font-weight:800;color:#e2e8f0;">#{rank}</span>' if rank else ''
 
     link_url = goodreads_url if goodreads_url else f"https://www.goodreads.com/search?q={quote_plus(title)}"
 
-    safe_title = quote_plus((title or "Livre")[:24])
+    safe_title = quote_plus(title[:24])
     safe_image_url = image_url if image_url else f"https://dummyimage.com/128x192/e2e8f0/334155.png&text={safe_title}"
 
     img_part = (
