@@ -755,11 +755,20 @@ with tab4:
         # Sort clusters by size for cleaner display
         sorted_clusters = sorted(cluster_data.items(), key=lambda x: len(x[1]), reverse=True)
         cluster_sizes = [len(v) for _, v in sorted_clusters]
-        cluster_names = [f"Groupe {k+1} ({len(v)} livres)" for k, v in sorted_clusters]
+        cluster_names = [f"Groupe {k+1}" for k, _ in sorted_clusters]
+        cluster_labels = [f"{n} ({s} livres)" for n, s in zip(cluster_names, cluster_sizes)]
+        # Use a DataFrame with explicit parent for reliable treemap rendering
+        df_clusters = pd.DataFrame({
+            'label': cluster_labels,
+            'size': cluster_sizes,
+            'parent': ['Clusters'] * len(cluster_labels),
+        })
         fig_cluster = px.treemap(
-            names=cluster_names,
-            values=cluster_sizes,
-            color=cluster_sizes,
+            df_clusters,
+            names='label',
+            parents='parent',
+            values='size',
+            color='size',
             color_continuous_scale='Teal',
         )
         fig_cluster.update_layout(height=400, margin=dict(l=10, r=10, t=10, b=10), coloraxis_showscale=False)
