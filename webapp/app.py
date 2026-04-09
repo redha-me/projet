@@ -755,7 +755,7 @@ with tab4:
         # Sort clusters by size for cleaner display
         sorted_clusters = sorted(cluster_data.items(), key=lambda x: len(x[1]), reverse=True)
         cluster_sizes = [len(v) for _, v in sorted_clusters]
-        cluster_names = [f"Groupe {k+1} ({s} livres)" for k, s in sorted_clusters]
+        cluster_names = [f"Groupe {k+1} ({len(v)} livres)" for k, v in sorted_clusters]
         fig_cluster = px.treemap(
             names=cluster_names,
             values=cluster_sizes,
