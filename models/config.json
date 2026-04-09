@@ -1,9 +1,0 @@
-{
-  "n_users": 66909,
-  "n_books": 898,
-  "n_neighbors": 20,
-  "w_cb": 0.0,
-  "w_cf": 0.4,
-  "w_mf": 0.6,
-  "global_mean": 3.9229021072387695
-}

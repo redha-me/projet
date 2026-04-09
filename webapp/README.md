@@ -1,9 +1,0 @@
-title: BookMatch
-emoji: 📚
-colorFrom: indigo
-colorTo: purple
-sdk: streamlit
-app_file: app.py
-pinned: false
-license: mit
-python_version: 3.11
