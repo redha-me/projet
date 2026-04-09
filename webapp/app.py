@@ -238,6 +238,11 @@ with st.spinner('Demarrage de BookMatch...'):
 n_books = recommender.get_book_count()
 n_users = recommender.get_user_count()
 all_titles = recommender.get_all_titles()
+# Books with TF-IDF metadata available for content-based similarity
+available_for_similar = sorted([
+    title for title in all_titles
+    if recommender.title_to_idx.get(title.lower().strip()) in recommender.book_idx_to_row
+])
 
 
 # ── Section Hero ──────────────────────────────────────────────────────────────
@@ -419,7 +424,7 @@ with tab2:
 
     selected_title = st.selectbox(
         "Choisissez un livre que vous avez lu et aime :",
-        all_titles, key="similar_select",
+        available_for_similar, key="similar_select",
     )
 
     c1, c2 = st.columns(2)
