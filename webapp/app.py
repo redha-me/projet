@@ -747,14 +747,20 @@ with tab4:
     st.plotly_chart(fig_pop, use_container_width=True)
 
     # Treemap des clusters
-    if hasattr(recommender, 'cluster_to_book_idxs') and len(recommender.cluster_to_book_idxs) > 0:
+    cluster_data = getattr(recommender, 'cluster_to_book_idxs', None)
+    if cluster_data and len(cluster_data) > 0:
         st.markdown("---")
         st.markdown("#### Comment les livres sont-ils groupes ?")
         st.markdown('<div class="chart-caption">🗂️ Notre IA regroupe les livres en clusters bases sur les themes et le comportement des lecteurs.</div>', unsafe_allow_html=True)
-        cluster_sizes = [len(v) for v in recommender.cluster_to_book_idxs.values()]
+        # Sort clusters by size for cleaner display
+        sorted_clusters = sorted(cluster_data.items(), key=lambda x: len(x[1]), reverse=True)
+        cluster_sizes = [len(v) for _, v in sorted_clusters]
+        cluster_names = [f"Groupe {k+1} ({s} livres)" for k, s in sorted_clusters]
         fig_cluster = px.treemap(
-            names=[f"Groupe {i+1} ({s} livres)" for i, s in enumerate(cluster_sizes)],
-            values=cluster_sizes, color=cluster_sizes, color_continuous_scale='Teal',
+            names=cluster_names,
+            values=cluster_sizes,
+            color=cluster_sizes,
+            color_continuous_scale='Teal',
         )
         fig_cluster.update_layout(height=400, margin=dict(l=10, r=10, t=10, b=10), coloraxis_showscale=False)
         st.plotly_chart(fig_cluster, use_container_width=True)
