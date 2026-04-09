@@ -8,10 +8,13 @@
 import os
 import pickle
 import json
+import requests
 import numpy as np
 import pandas as pd
 import joblib
-from urllib.parse import quote_plus
+from functools import lru_cache
+from urllib.parse import quote_plus, quote
+from bs4 import BeautifulSoup
 from scipy import sparse
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -25,6 +28,7 @@ class BookRecommender:
     def __init__(self, models_dir: str = MODELS_DIR):
         self.models_dir = models_dir
         self._loaded = False
+        self._goodreads_cache = {}
 
         # Valeurs par defaut (seront ecrasees par config.json)
         self.W_CB = 0.0
@@ -468,8 +472,8 @@ class BookRecommender:
         if not image_url:
             image_url = self._generate_cover_url(title, author)
         if not goodreads_url:
-            query = quote_plus(f"{title} {author}".strip())
-            goodreads_url = f"https://www.goodreads.com/search?q={query}"
+            # Fetch first Goodreads result for this title
+            goodreads_url = self._resolve_goodreads_url(title)
         if not description:
             description = f"'{title}' est un livre de notre catalogue. Explorez ce titre pour en decouvrir plus."
 
@@ -497,3 +501,29 @@ class BookRecommender:
         color1, color2 = colors[color_idx]
         short_title = title[:30] + "..." if len(title) > 30 else title
         return f"https://dummyimage.com/320x480/{color1}/{color2}.png&text={quote_plus(short_title)}"
+
+    def _resolve_goodreads_url(self, title: str) -> str:
+        """Fetch Goodreads search and return the first result URL (cached)."""
+        if title in self._goodreads_cache:
+            return self._goodreads_cache[title]
+
+        try:
+            resp = requests.get(
+                "https://www.goodreads.com/search",
+                params={"q": title, "search[type]": "books"},
+                headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"},
+                timeout=5,
+            )
+            soup = BeautifulSoup(resp.text, "html.parser")
+            first_link = soup.select_one('a.bookTitle')
+            if first_link and first_link.get('href'):
+                url = f"https://www.goodreads.com{first_link['href']}"
+                self._goodreads_cache[title] = url
+                return url
+        except Exception:
+            pass
+
+        # Fallback to search page
+        url = f"https://www.goodreads.com/search?q={quote_plus(title)}"
+        self._goodreads_cache[title] = url
+        return url
