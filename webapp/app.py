@@ -355,6 +355,19 @@ with tab1:
         min_conf = confidence_map[confidence]
 
     popular = recommender.get_popular_recommendations(top_n=top_n_pop, min_confidence_percentile=min_conf)
+    if popular is None or popular.empty:
+        st.markdown('<div class="empty-state"><div class="empty-icon">📭</div><p>Aucun livre trouve pour ces criteres.</p></div>', unsafe_allow_html=True)
+        st.stop()
+
+    # Clean NaN values that can leak as "undefined" in the UI
+    numeric_cols = ['score', 'avg_rating', 'n_ratings']
+    for c in numeric_cols:
+        if c in popular.columns:
+            popular[c] = popular[c].fillna(0)
+    str_cols = ['title', 'author', 'genre']
+    for c in str_cols:
+        if c in popular.columns:
+            popular[c] = popular[c].fillna('')
     popular = recommender.sort_by_metadata_quality(popular)
 
     with c2:
