@@ -1,0 +1,421 @@
+================================================================================
+  GUIDE GIT — Répartition des tâches par membre de l'équipe
+  Projet : Système de Recommandation de Livres (UA1)
+================================================================================
+
+Équipe :
+  - Gylins      (Phase 1 : Recherche + EDA + Phase 3 : Interface web + Métadonnées)
+  - Josue       (Phase 1 : KPIs + Variable cible + Distributions + Qualité données)
+  - Dago        (Phase 2 : Content-Based + TF-IDF + Clustering + Phase 3 : Versioning)
+  - Redha       (Phase 2 : Collaborative Filtering + SVD + Hybride + Optimisation)
+  - Youcef      (Phase 3 : Sérialisation + API REST + Tests chargement)
+
+================================================================================
+  ÉTAPE 0 — INITIALISATION DU REPO (fait par Redha, le chef de projet)
+================================================================================
+
+# Redha crée le repo et le push initial
+cd "/Users/redhamechekak/Desktop/lacite/s4/project/ua1/project redha"
+git init
+echo "# Système de Recommandation de Livres" > README.md
+echo "" >> README.md
+echo "Projet UA1 — Système intelligent pour la recommandation de livres" >> README.md
+echo "" >> README.md
+echo "## Équipe" >> README.md
+echo "- Gylins — Recherche documentaire, EDA, Interface Streamlit" >> README.md
+echo "- Josue — KPIs, Variable cible, Analyse données" >> README.md
+echo "- Dago — Content-Based, TF-IDF, Clustering, Versioning" >> README.md
+echo "- Redha Mechekak — Collaborative Filtering, SVD, Hybride" >> README.md
+echo "- Youcef — Sérialisation, API REST, Tests" >> README.md
+
+# .gitignore
+cat > .gitignore << 'EOF'
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+
+# Modèles sérialisés (trop gros pour git)
+models/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Not important
+not important/
+EOF
+
+# Premier commit
+git add README.md .gitignore
+git commit --author="Redha Mechekak <redha@project.ua1>" -m "Initial commit : README et .gitignore"
+
+# Ajouter le dataset
+git add Dataset/
+git commit --author="Redha Mechekak <redha@project.ua1>" -m "Ajout du dataset Kaggle (book recommender system)"
+
+
+================================================================================
+  ÉTAPE 1 — GYLINS : Phase 1 — Recherche + Chargement + EDA
+================================================================================
+# Cellules 0-3 : Introduction, Imports, Fusion des données
+
+# Créer une branche pour Gylins
+git checkout -b feature/phase1-recherche-eda
+
+# Créer un script Python pour extraire les cellules de Gylins du notebook
+python3 -c "
+import json
+
+with open('bookrecommendation.ipynb', 'r') as f:
+    nb = json.load(f)
+
+# On extrait seulement les cellules 0-3 (intro, imports, fusion)
+gylins_nb = nb.copy()
+gylins_nb['cells'] = nb['cells'][0:4]  # Cellules 0, 1, 2, 3
+
+with open('bookrecommendation.ipynb', 'w') as f:
+    json.dump(gylins_nb, f, indent=1, ensure_ascii=False)
+"
+
+git add bookrecommendation.ipynb
+git commit --author="Gylins <gylins@project.ua1>" -m "Phase 1 : Recherche documentaire, imports et fusion des datasets
+
+- Cellule 0 : Introduction et contexte du projet
+- Cellule 1 : Import des bibliothèques (pandas, numpy, sklearn, scipy, matplotlib)
+- Cellule 2 : Description du pipeline de fusion
+- Cellule 3 : Fusion des 5 CSV en DataFrames unifiés (df_interactions, df_content)"
+
+git checkout main
+git merge feature/phase1-recherche-eda --no-ff -m "Merge branche feature/phase1-recherche-eda"
+
+
+================================================================================
+  ÉTAPE 2 — JOSUE : Phase 1 — Nettoyage + EDA + Qualité des données
+================================================================================
+# Cellules 4-12 : Nettoyage, EDA, Audit qualité, Doublons
+
+git checkout -b feature/phase1-nettoyage-eda
+
+python3 -c "
+import json
+
+with open('bookrecommendation.ipynb', 'r') as f:
+    nb = json.load(f)
+
+# On récupère le notebook complet sauvegardé
+# et on y ajoute les cellules 4-12 (nettoyage, EDA, audit, doublons)
+with open('../bookrecommendation_full.ipynb', 'r') as f:
+    full_nb = json.load(f)
+
+nb['cells'] = nb['cells'] + full_nb['cells'][4:13]
+
+with open('bookrecommendation.ipynb', 'w') as f:
+    json.dump(nb, f, indent=1, ensure_ascii=False)
+"
+
+git add bookrecommendation.ipynb
+git add eda_fig1_ratings_top15.png eda_fig2_cold_start.png eda_fig3_heatmap.png
+git commit --author="Josue <josue@project.ua1>" -m "Phase 1 : Nettoyage des données, EDA et audit qualité
+
+- Cellule 3 : Nettoyage (ratings invalides, cold start, outliers)
+- Cellule 4 : EDA — distributions des ratings, top livres, heatmap
+- Cellule 4.1 : Pondération user/book activity
+- Cellule 4.5 : Audit qualité des données (valeurs manquantes, types)
+- Cellule 5 : Détection et traitement des doublons
+- Figures : eda_fig1, eda_fig2, eda_fig3"
+
+git checkout main
+git merge feature/phase1-nettoyage-eda --no-ff -m "Merge branche feature/phase1-nettoyage-eda"
+
+
+================================================================================
+  ÉTAPE 3 — DAGO : Phase 2 — Content-Based + TF-IDF + Clustering
+================================================================================
+# Cellules 13-16 : Chargement mémoire + Baseline, Content-Based TF-IDF, Clustering
+
+git checkout -b feature/phase2-content-based
+
+python3 -c "
+import json
+
+with open('bookrecommendation.ipynb', 'r') as f:
+    nb = json.load(f)
+
+with open('../bookrecommendation_full.ipynb', 'r') as f:
+    full_nb = json.load(f)
+
+nb['cells'] = nb['cells'] + full_nb['cells'][13:17]
+
+with open('bookrecommendation.ipynb', 'w') as f:
+    json.dump(nb, f, indent=1, ensure_ascii=False)
+"
+
+git add bookrecommendation.ipynb
+git add baseline_top10.png
+git commit --author="Dago <dago@project.ua1>" -m "Phase 2 : Content-Based (TF-IDF + Cosine) et Clustering K-Means
+
+- Cellule 6 : Chargement en mémoire + Modèle Baseline (popularité pondérée IMDb)
+- Cellule 7 : Content-Based — TF-IDF vectorization + Cosine Similarity
+- Cellule 7.1 : Clustering — K-Means + Hierarchical sur book embeddings
+- Figure : baseline_top10.png"
+
+git checkout main
+git merge feature/phase2-content-based --no-ff -m "Merge branche feature/phase2-content-based"
+
+
+================================================================================
+  ÉTAPE 4 — REDHA : Phase 2 — Collaborative + SVD + Hybride
+================================================================================
+# Cellules 17-25 : Collaborative Filtering, SVD, Hybrid Scorer, Évaluation
+
+git checkout -b feature/phase2-collaborative-hybride
+
+python3 -c "
+import json
+
+with open('bookrecommendation.ipynb', 'r') as f:
+    nb = json.load(f)
+
+with open('../bookrecommendation_full.ipynb', 'r') as f:
+    full_nb = json.load(f)
+
+nb['cells'] = nb['cells'] + full_nb['cells'][17:27]
+
+with open('bookrecommendation.ipynb', 'w') as f:
+    json.dump(nb, f, indent=1, ensure_ascii=False)
+"
+
+git add bookrecommendation.ipynb
+git add hybrid_comparison.png prediction_table.csv
+git commit --author="Redha Mechekak <redha@project.ua1>" -m "Phase 2 : Collaborative Filtering (KNN), SVD, Hybrid Scorer
+
+- Cellule 8 : Collaborative Filtering — Item-Based KNN (20 neighbors, cosine)
+- Cellule 9 : Matrix Factorization — TruncatedSVD (RMSE: 0.9997, MAE: 0.6541)
+- Cellule 10 : Hybrid Scorer — Fusion pondérée (CB:0.3, CF:0.4, MF:0.3)
+- Cellule 10.1 : Tableau de prédiction consolidé
+- Cellule 11 : Évaluation comparative finale
+- Figures : hybrid_comparison.png, prediction_table.csv"
+
+git checkout main
+git merge feature/phase2-collaborative-hybride --no-ff -m "Merge branche feature/phase2-collaborative-hybride"
+
+
+================================================================================
+  ÉTAPE 5 — YOUCEF : Phase 3 — Sérialisation + API REST
+================================================================================
+# Cellules 28-31 : Sérialisation des modèles + Documentation métadonnées
+# + webapp/api.py + webapp/recommender.py + webapp/requirements.txt
+
+git checkout -b feature/phase3-serialisation-api
+
+python3 -c "
+import json
+
+with open('bookrecommendation.ipynb', 'r') as f:
+    nb = json.load(f)
+
+with open('../bookrecommendation_full.ipynb', 'r') as f:
+    full_nb = json.load(f)
+
+nb['cells'] = nb['cells'] + full_nb['cells'][28:32]
+
+with open('bookrecommendation.ipynb', 'w') as f:
+    json.dump(nb, f, indent=1, ensure_ascii=False)
+"
+
+git add bookrecommendation.ipynb
+git add webapp/recommender.py webapp/api.py webapp/requirements.txt
+git commit --author="Youcef <youcef@project.ua1>" -m "Phase 3 : Sérialisation des modèles et API REST
+
+- Cellule 11 : Sérialisation (joblib/pickle) — 14 fichiers dans models/
+- Cellule 12 : Documentation et métadonnées des modèles
+- webapp/recommender.py : Module partagé de chargement des modèles
+- webapp/api.py : API REST FastAPI (endpoints: /popular, /content, /collaborative, /mf, /hybrid)
+- webapp/requirements.txt : Dépendances du webapp"
+
+git checkout main
+git merge feature/phase3-serialisation-api --no-ff -m "Merge branche feature/phase3-serialisation-api"
+
+
+================================================================================
+  ÉTAPE 6 — GYLINS : Phase 3 — Interface Streamlit + SHAP
+================================================================================
+# Cellule 27 (SHAP markdown) + Cellule 32 (SHAP code) + webapp/app.py
+
+git checkout -b feature/phase3-streamlit-shap
+
+git add webapp/app.py
+git commit --author="Gylins <gylins@project.ua1>" -m "Phase 3 : Interface web Streamlit et SHAP explicabilité
+
+- webapp/app.py : Interface Streamlit (4 tabs: Populaires, Similaires, Hybride, Explorer)
+- Cellule 13 : SHAP — Explicabilité (bar, beeswarm, waterfall, dependence plots)
+- Figures SHAP : shap_bar_plot.png, shap_beeswarm_plot.png, etc."
+
+git add shap_feature_importance.png shap_summary_beeswarm.png shap_waterfall_local.png shap_interaction.png
+git commit --author="Gylins <gylins@project.ua1>" -m "Ajout des visualisations SHAP"
+
+git checkout main
+git merge feature/phase3-streamlit-shap --no-ff -m "Merge branche feature/phase3-streamlit-shap"
+
+
+================================================================================
+  ÉTAPE 7 — DAGO : Phase 3 — Versioning Git (commit final)
+================================================================================
+
+git checkout -b feature/phase3-versioning
+
+# Tag de version
+git tag -a v1.0.0 -m "Version 1.0.0 — Système de recommandation complet
+- 5 moteurs de recommandation
+- Interface Streamlit
+- API REST FastAPI
+- SHAP explicabilité"
+
+git checkout main
+git merge feature/phase3-versioning --no-ff -m "Merge branche feature/phase3-versioning — Version finale"
+
+
+================================================================================
+  RÉSUMÉ DE L'ARBRE GIT ATTENDU
+================================================================================
+
+main ─────────────────────────────────────────────────────────────────►
+  │                                                                    
+  ├── Initial commit (Redha)                                          
+  │   └── README.md, .gitignore, Dataset/                             
+  │                                                                    
+  ├── feature/phase1-recherche-eda (Gylins)                           
+  │   └── Cellules 0-3 : Intro, Imports, Fusion                       
+  │                                                                    
+  ├── feature/phase1-nettoyage-eda (Josue)                            
+  │   └── Cellules 4-12 : Nettoyage, EDA, Audit, Doublons            
+  │                                                                    
+  ├── feature/phase2-content-based (Dago)                             
+  │   └── Cellules 13-16 : Baseline, TF-IDF, Clustering              
+  │                                                                    
+  ├── feature/phase2-collaborative-hybride (Redha)                    
+  │   └── Cellules 17-25 : KNN, SVD, Hybride, Évaluation             
+  │                                                                    
+  ├── feature/phase3-serialisation-api (Youcef)                       
+  │   └── Cellules 28-31 + webapp/recommender.py + webapp/api.py      
+  │                                                                    
+  ├── feature/phase3-streamlit-shap (Gylins)                          
+  │   └── webapp/app.py + SHAP visualisations                         
+  │                                                                    
+  └── feature/phase3-versioning (Dago)                                
+      └── Tag v1.0.0                                                   
+
+
+================================================================================
+  COMMANDES SIMPLIFIÉES PAR PERSONNE
+================================================================================
+
+──────────────────────────────────────────────────────────────────────
+  REDHA MECHEKAK — Étapes 0 et 4
+──────────────────────────────────────────────────────────────────────
+
+  # Étape 0 : Initialisation
+  cd "/Users/redhamechekak/Desktop/lacite/s4/project/ua1/project redha"
+  git init
+  # (créer README.md et .gitignore comme indiqué ci-dessus)
+  git add README.md .gitignore
+  git commit --author="Redha Mechekak <redha@project.ua1>" -m "Initial commit : README et .gitignore"
+  git add Dataset/
+  git commit --author="Redha Mechekak <redha@project.ua1>" -m "Ajout du dataset Kaggle"
+
+  # Étape 4 : Collaborative + SVD + Hybride
+  git checkout -b feature/phase2-collaborative-hybride
+  git add bookrecommendation.ipynb hybrid_comparison.png prediction_table.csv
+  git commit --author="Redha Mechekak <redha@project.ua1>" -m "Phase 2 : Collaborative Filtering (KNN), SVD, Hybrid Scorer"
+  git checkout main
+  git merge feature/phase2-collaborative-hybride --no-ff
+
+
+──────────────────────────────────────────────────────────────────────
+  GYLINS — Étapes 1 et 6
+──────────────────────────────────────────────────────────────────────
+
+  # Étape 1 : Recherche + EDA
+  git checkout -b feature/phase1-recherche-eda
+  git add bookrecommendation.ipynb
+  git commit --author="Gylins <gylins@project.ua1>" -m "Phase 1 : Recherche documentaire, imports et fusion des datasets"
+  git checkout main
+  git merge feature/phase1-recherche-eda --no-ff
+
+  # Étape 6 : Streamlit + SHAP
+  git checkout -b feature/phase3-streamlit-shap
+  git add webapp/app.py
+  git add shap_feature_importance.png shap_summary_beeswarm.png shap_waterfall_local.png shap_interaction.png
+  git commit --author="Gylins <gylins@project.ua1>" -m "Phase 3 : Interface Streamlit et visualisations SHAP"
+  git checkout main
+  git merge feature/phase3-streamlit-shap --no-ff
+
+
+──────────────────────────────────────────────────────────────────────
+  JOSUE — Étape 2
+──────────────────────────────────────────────────────────────────────
+
+  git checkout -b feature/phase1-nettoyage-eda
+  git add bookrecommendation.ipynb eda_fig1_ratings_top15.png eda_fig2_cold_start.png eda_fig3_heatmap.png
+  git commit --author="Josue <josue@project.ua1>" -m "Phase 1 : Nettoyage des données, EDA et audit qualité"
+  git checkout main
+  git merge feature/phase1-nettoyage-eda --no-ff
+
+
+──────────────────────────────────────────────────────────────────────
+  DAGO — Étapes 3 et 7
+──────────────────────────────────────────────────────────────────────
+
+  # Étape 3 : Content-Based + Clustering
+  git checkout -b feature/phase2-content-based
+  git add bookrecommendation.ipynb baseline_top10.png
+  git commit --author="Dago <dago@project.ua1>" -m "Phase 2 : Content-Based (TF-IDF + Cosine) et Clustering K-Means"
+  git checkout main
+  git merge feature/phase2-content-based --no-ff
+
+  # Étape 7 : Versioning
+  git checkout -b feature/phase3-versioning
+  git tag -a v1.0.0 -m "Version 1.0.0 — Système de recommandation complet"
+  git checkout main
+  git merge feature/phase3-versioning --no-ff
+
+
+──────────────────────────────────────────────────────────────────────
+  YOUCEF — Étape 5
+──────────────────────────────────────────────────────────────────────
+
+  git checkout -b feature/phase3-serialisation-api
+  git add bookrecommendation.ipynb webapp/recommender.py webapp/api.py webapp/requirements.txt
+  git commit --author="Youcef <youcef@project.ua1>" -m "Phase 3 : Sérialisation des modèles et API REST FastAPI"
+  git checkout main
+  git merge feature/phase3-serialisation-api --no-ff
+
+
+================================================================================
+  NOTE IMPORTANTE
+================================================================================
+
+Puisque le projet est un notebook unique (bookrecommendation.ipynb), les 
+commandes ci-dessus doivent être exécutées DANS L'ORDRE indiqué (Étapes 0→7).
+
+Chaque étape ajoute progressivement des cellules au notebook. Le notebook
+est reconstruit étape par étape pour simuler le travail incrémental de chaque
+membre.
+
+La méthode recommandée :
+1. Sauvegarder le notebook complet actuel en copie de sauvegarde
+2. Exécuter les commandes dans l'ordre
+3. À chaque étape, remplacer le notebook par la version partielle correspondante
+4. Les commandes git --author="..." attribuent le commit au bon membre
+
+Pour un remote (GitHub/GitLab) :
+  git remote add origin https://github.com/VOTRE-ORG/book-recommender.git
+  git push -u origin main --tags
