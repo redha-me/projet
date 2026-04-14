@@ -1,13 +1,14 @@
 # BookMatch — Système de Recommandation de Livres
 
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/redh2601/bookmatch)
 [![Deploy on Render](https://img.shields.io/badge/Deploy-Render-blue?logo=render)](https://render.com)
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/redh2601/bookmatch?logs=container)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## 📖 Description
 
 **BookMatch** est un système intelligent de recommandation de livres qui combine plusieurs approches de Machine Learning pour offrir des recommandations personnalisées et précises. Le projet suit la méthodologie **CRISP-DM** (Cross-Industry Standard Process for Data Mining).
 
-🚀 **Application en ligne :** [BookMatch sur Hugging Face Spaces](https://huggingface.co/spaces/redh2601/bookmatch?logs=container)
+🚀 **Application en ligne :** [BookMatch sur Hugging Face Spaces](https://huggingface.co/spaces/redh2601/bookmatch)
 
 ## ✨ Fonctionnalités
 
@@ -16,10 +17,51 @@
   - **Content-Based** : filtrage basé sur le contenu (TF-IDF)
   - **Collaborative Filtering** : filtrage collaboratif (KNN)
   - **Matrix Factorization** : factorisation de matrices (SVD)
-  
+
 - **Interface web interactive** développée avec Streamlit
 - **API REST** pour l'intégration avec d'autres applications
 - **Évaluation rigoureuse** avec métriques standard (RMSE, Recall@K)
+
+## ☁️ Déploiement sur Hugging Face Spaces
+
+BookMatch est déployé sur **Hugging Face Spaces** pour une démonstration en ligne accessible à tous.
+
+### 🌐 Accéder à l'application
+
+Visitez directement : [BookMatch sur Hugging Face Spaces](https://huggingface.co/spaces/redh2601/bookmatch)
+
+### 📋 Déployer votre propre Space
+
+1. **Créer un Space sur Hugging Face**
+   - Connectez-vous à [Hugging Face](https://huggingface.co)
+   - Cliquez sur "New Space"
+   - Choisissez "Streamlit" comme SDK
+   - Nommez votre Space (ex: `bookmatch`)
+
+2. **Déployer depuis GitHub**
+   - Dans les paramètres de votre Space, sélectionnez "GitHub" comme source
+   - Connectez votre repository GitHub
+   - Hugging Face détectera automatiquement le fichier `requirements.txt` dans `webapp/`
+   - Le déploiement se fait automatiquement à chaque push
+
+3. **Configuration manuelle (optionnel)**
+   - Ajoutez un fichier `README.md` à la racine de votre Space pour la documentation
+   - Configurez les secrets dans les paramètres si nécessaire (API keys, etc.)
+
+### 📁 Structure pour Hugging Face
+
+```
+projet/
+├── webapp/
+│   ├── app.py              # Point d'entrée Streamlit (utilisé par HF Spaces)
+│   ├── api.py              # API REST optionnelle
+│   ├── recommender.py      # Moteur de recommandation
+│   └── requirements.txt    # Dépendances Python (détecté automatiquement)
+├── models/                 # Modèles pré-entraînés
+└── Dataset/                # Données
+```
+
+> **Note:** Hugging Face Spaces utilise automatiquement le fichier `requirements.txt` pour installer les dépendances. Assurez-vous qu'il est à la racine du Space ou dans le dossier spécifié.
 
 ## 🏗️ Architecture du Projet
 
@@ -57,7 +99,7 @@ projet/
 - **Visualisation** : Matplotlib, Seaborn
 - **NLP** : TF-IDF (scikit-learn)
 - **Web** : Streamlit, FastAPI
-- **Déploiement** : Docker, Render, Hugging Face Spaces
+- **Déploiement** : Hugging Face Spaces, Docker, Render
 
 ## 🚀 Installation et Utilisation
 
@@ -88,7 +130,9 @@ streamlit run webapp/app.py --server.port 7860
    
 Ouvrez votre navigateur et accédez à : `http://localhost:7860`
 
-## 🐳 Déploiement avec Docker
+## 🐳 Déploiement avec Docker (Alternatif)
+
+> **Note:** Le déploiement principal se fait via Hugging Face Spaces. Docker est proposé comme alternative pour un déploiement local ou sur d'autres plateformes.
 
 ### Construire l'image Docker
 
@@ -104,7 +148,9 @@ docker run -p 7860:7860 bookmatch
 
 L'application sera accessible sur `http://localhost:7860`
 
-## ☁️ Déploiement sur Render
+## ☁️ Déploiement sur Render (Alternatif)
+
+> **Note:** Le déploiement principal se fait via Hugging Face Spaces. Render est proposé comme alternative pour un déploiement sur infrastructure cloud.
 
 Le fichier `render.yaml` est déjà configuré pour un déploiement automatique sur Render :
 
@@ -181,6 +227,9 @@ recommendations = response.json()
 ## 📝 Auteur
 
 Projet développé dans le cadre d'un projet de système de recommandation.
+
+- **Hugging Face:** [redh2601](https://huggingface.co/redh2601)
+- **Space:** [BookMatch Spaces](https://huggingface.co/spaces/redh2601/bookmatch)
 
 ## 📄 Licence
 
