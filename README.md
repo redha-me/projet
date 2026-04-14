@@ -70,7 +70,7 @@ projet/
 
 1. **Cloner le repository**
 ```bash
-git clone <url-du-repository>
+git clone https://github.com/redha-me/projet.git
 cd projet
 ```
 
