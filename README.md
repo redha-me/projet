@@ -130,35 +130,6 @@ streamlit run webapp/app.py --server.port 7860
    
 Ouvrez votre navigateur et accédez à : `http://localhost:7860`
 
-## 🐳 Déploiement avec Docker (Alternatif)
-
-> **Note:** Le déploiement principal se fait via Hugging Face Spaces. Docker est proposé comme alternative pour un déploiement local ou sur d'autres plateformes.
-
-### Construire l'image Docker
-
-```bash
-docker build -t bookmatch .
-```
-
-### Exécuter le conteneur
-
-```bash
-docker run -p 7860:7860 bookmatch
-```
-
-L'application sera accessible sur `http://localhost:7860`
-
-## ☁️ Déploiement sur Render (Alternatif)
-
-> **Note:** Le déploiement principal se fait via Hugging Face Spaces. Render est proposé comme alternative pour un déploiement sur infrastructure cloud.
-
-Le fichier `render.yaml` est déjà configuré pour un déploiement automatique sur Render :
-
-1. Connectez-vous à [Render](https://render.com)
-2. Importez votre repository
-3. Render détectera automatiquement la configuration dans `render.yaml`
-4. Déployez !
-
 ## 📊 Méthodologie CRISP-DM
 
 Le projet suit les 6 phases de la méthodologie CRISP-DM :
