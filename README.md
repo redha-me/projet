@@ -8,7 +8,7 @@
 
 **BookMatch** est un système intelligent de recommandation de livres qui combine plusieurs approches de Machine Learning pour offrir des recommandations personnalisées et précises. Le projet suit la méthodologie **CRISP-DM** (Cross-Industry Standard Process for Data Mining).
 
-🚀 **Application en ligne :** [BookMatch sur Hugging Face Spaces](https://huggingface.co/spaces/redh2601/bookmatch)
+🚀 **Application en ligne :** [BookMatch sur Hugging Face Spaces](https://huggingface.co/spaces/redha2601/bookmatch)
 
 ## ✨ Fonctionnalités
 
