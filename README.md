@@ -63,7 +63,7 @@ projet/
 
 > **Note:** Hugging Face Spaces utilise automatiquement le fichier `requirements.txt` pour installer les dépendances. Assurez-vous qu'il est à la racine du Space ou dans le dossier spécifié.
 
-## 🏗️ Architecture du Projet
+##  Architecture du Projet
 
 ```
 projet/
