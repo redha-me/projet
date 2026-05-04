@@ -4,13 +4,13 @@
 [![Deploy on Render](https://img.shields.io/badge/Deploy-Render-blue?logo=render)](https://render.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## 📖 Description
+##  Description
 
 **BookMatch** est un système intelligent de recommandation de livres qui combine plusieurs approches de Machine Learning pour offrir des recommandations personnalisées et précises. Le projet suit la méthodologie **CRISP-DM** (Cross-Industry Standard Process for Data Mining).
 
-🚀 **Application en ligne :** [BookMatch sur Hugging Face Spaces](https://huggingface.co/spaces/redha2601/bookmatch)
+ **Application en ligne :** [BookMatch sur Hugging Face Spaces](https://huggingface.co/spaces/redha2601/bookmatch)
 
-## ✨ Fonctionnalités
+##  Fonctionnalités
 
 - **Recommandation hybride** combinant 4 approches :
   - **Baseline** : recommandation basée sur la popularité
@@ -22,15 +22,15 @@
 - **API REST** pour l'intégration avec d'autres applications
 - **Évaluation rigoureuse** avec métriques standard (RMSE, Recall@K)
 
-## ☁️ Déploiement sur Hugging Face Spaces
+##  Déploiement sur Hugging Face Spaces
 
 BookMatch est déployé sur **Hugging Face Spaces** pour une démonstration en ligne accessible à tous.
 
-### 🌐 Accéder à l'application
+###  Accéder à l'application
 
 Visitez directement : [BookMatch sur Hugging Face Spaces](https://huggingface.co/spaces/redh2601/bookmatch)
 
-### 📋 Déployer votre propre Space
+###  Déployer votre propre Space
 
 1. **Créer un Space sur Hugging Face**
    - Connectez-vous à [Hugging Face](https://huggingface.co)
@@ -48,7 +48,7 @@ Visitez directement : [BookMatch sur Hugging Face Spaces](https://huggingface.co
    - Ajoutez un fichier `README.md` à la racine de votre Space pour la documentation
    - Configurez les secrets dans les paramètres si nécessaire (API keys, etc.)
 
-### 📁 Structure pour Hugging Face
+###  Structure pour Hugging Face
 
 ```
 projet/
@@ -92,7 +92,7 @@ projet/
 └── README.md                        # Ce fichier
 ```
 
-## 🛠️ Technologies Utilisées
+##  Technologies Utilisées
 
 - **Python 3.11**
 - **Data Science** : NumPy, Pandas, SciPy, scikit-learn, Surprise
@@ -101,7 +101,7 @@ projet/
 - **Web** : Streamlit, FastAPI
 - **Déploiement** : Hugging Face Spaces, Docker, Render
 
-## 🚀 Installation et Utilisation
+##  Installation et Utilisation
 
 ### Prérequis
 
@@ -130,7 +130,7 @@ streamlit run webapp/app.py --server.port 7860
    
 Ouvrez votre navigateur et accédez à : `http://localhost:7860`
 
-## 📊 Méthodologie CRISP-DM
+##  Méthodologie CRISP-DM
 
 Le projet suit les 6 phases de la méthodologie CRISP-DM :
 
@@ -143,7 +143,7 @@ Le projet suit les 6 phases de la méthodologie CRISP-DM :
 | **5. Évaluation** | Train/test split, métriques standard (RMSE, Recall@K), optimisation hybride |
 | **6. Déploiement** | Sérialisation des modèles, application web Streamlit, API REST |
 
-## 📈 Données
+##  Données
 
 Le dataset comprend :
 
@@ -160,7 +160,7 @@ Le dataset comprend :
 | **Métadonnées (CB)** | `collaborative_book_metadata.csv` | Texte riche pour TF-IDF (description, genre, auteur) |
 | **Décodage identités** | `user_id_map.csv`, `book_id_map.csv`, `book_titles.csv` | Rétablir UUIDs / titres en sortie finale |
 
-## 🎯 Modèles de Recommandation
+##  Modèles de Recommandation
 
 ### 1. Baseline (Popularité)
 Recommande les livres les plus populaires et les mieux notés.
@@ -177,7 +177,7 @@ Décompose la matrice d'interactions pour capturer les préférences latentes.
 ### Approche Hybride
 Combine les 4 modèles avec des poids optimisés par grid search pour maximiser la qualité des recommandations.
 
-## 🔌 API REST
+##  API REST
 
 Une API REST est disponible via `webapp/api.py` pour intégrer le système de recommandation dans d'autres applications.
 
@@ -195,18 +195,18 @@ response = requests.post("http://localhost:8000/recommend", json={
 recommendations = response.json()
 ```
 
-## 📝 Auteur
+##  Auteur
 
 Projet développé dans le cadre d'un projet de système de recommandation.
 
 - **Hugging Face:** [redh2601](https://huggingface.co/redh2601)
 - **Space:** [BookMatch Spaces](https://huggingface.co/spaces/redh2601/bookmatch)
 
-## 📄 Licence
+##  Licence
 
 Ce projet est open-source.
 
-## 🤝 Contribuer
+##  Contribuer
 
 Les contributions sont les bienvenues ! N'hésitez pas à :
 
@@ -216,10 +216,10 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
 4. Pusher vers la branche (`git push origin feature/AmazingFeature`)
 5. Ouvrir une Pull Request
 
-## 📞 Support
+##  Support
 
 Pour toute question ou problème, n'hésitez pas à ouvrir une issue ou à contacter l'auteur.
 
 ---
 
-⭐ **Si ce projet vous a été utile, merci de lui donner une étoile !**
+ **Si ce projet vous a été utile, merci de lui donner une étoile !**
